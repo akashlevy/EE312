@@ -1,0 +1,16 @@
+###########################################
+# Sentaurus Visual N-2017.09-SP1.
+# Tcl log file.
+#------------------------------------------
+# Date: Feb 15, 2019. 18:08:38.
+# Version: 27.0.690 (1.690)
+# Mode: Interactive (GUI).
+# Hostname: rice05.
+# Machine: Linux, x86_64, x86_64.
+# Kernel: 4.15.0-45-generic.
+###########################################
+
+load_file /home/akashl/ee312/cross_2.tdr
+#!-> Error: File '/home/akashl/ee312/cross_2.tdr' could not be loaded.
+exit 0
+ 
