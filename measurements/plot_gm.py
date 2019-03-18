@@ -9,6 +9,9 @@ data = data.drop(columns=['Index','IdrainPerWg','IsubsPerWg','gmPerWg'])
 data = data.applymap(helper.convert_units)
 data = data[data.Vsubs == 0]
 
+# Find max transconductance
+max_vg_i, max_vg = np.argmax(data.gm), np.max(data.gm)
+
 # Set the font dictionaries (for plot title and axis titles)
 title_font = {'fontname':'Arial', 'size':'16', 'color':'black', 'weight':'bold', 'verticalalignment':'bottom'}
 axis_font = {'fontname':'Arial', 'size':'12'}
@@ -17,6 +20,6 @@ axis_font = {'fontname':'Arial', 'size':'12'}
 plt.title('Transconductance for L=100um W=100um nMOS transistor')
 plt.xlabel('$V_{G}$ (V)', **axis_font)
 plt.ylabel('$g_m$ (uS)', **axis_font)
-plt.plot(data.Vgate, data.Idrain*1E6)
+plt.plot(data.Vgate, data.gm*1E6)
 plt.savefig('figures/gm.eps', format='eps', dpi=1000)
 plt.show()
