@@ -2,7 +2,10 @@ import numpy as np
 
 '''Remove units from text cell'''
 def convert_units(data):
-    num, units = data.split()
+    try:
+        num, units = data.split()
+    except ValueError:
+        _, num, units = data.split()
     if units in ['A','V','S']:
         return float(num)
     elif units in ['mA', 'mV', 'mS']:
