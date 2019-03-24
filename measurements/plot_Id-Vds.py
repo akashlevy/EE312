@@ -11,6 +11,11 @@ data = data.applymap(helper.convert_units)
 # Pick gate voltages to sample
 Vgates = np.linspace(0, 3, num=7)
 
+# Compute linear region slope
+mlin = np.gradient(data[data.Vgate==2].Idrain)/np.gradient(data[data.Vgate==2].Vdrain)
+mlin = mlin[5]
+print(mlin)
+
 # Set the font dictionaries (for plot title and axis titles)
 title_font = {'fontname':'Arial', 'size':'16', 'color':'black', 'weight':'bold', 'verticalalignment':'bottom'}
 axis_font = {'fontname':'Arial', 'size':'12'}
