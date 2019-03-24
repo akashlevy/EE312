@@ -9,8 +9,8 @@ from glob import glob
 fname_re = re.compile('data/W1_D.*_W(.*)_L(.*)_NMOS.*')
 
 # Read in data and remove unnecessary columns+units
-Ws, Ls, sss = [], [], []
-for f in glob('data/W1_D1_W*_L*_NMOS_VgId_hiVd.txt'):
+Ws, Ls, Vts = [], [], []
+for f in glob('data/W1_D1_W*_L*_NMOS_VgId_loVd.txt'):
     matches = fname_re.search(f)
     Ws.append(float(matches.group(1)))
     Ls.append(float(matches.group(2)))
@@ -18,18 +18,20 @@ for f in glob('data/W1_D1_W*_L*_NMOS_VgId_hiVd.txt'):
     data = data.drop(columns=['Index','IdrainPerWg','IsubsPerWg','gmPerWg'])
     data = data.applymap(helper.convert_units)
     data = data[data.Vsubs == 0]
-    ss = 1E3/np.max(np.gradient(helper.smooth(np.log10(data.Idrain), box_pts=3))/np.gradient(data.Vgate))
-    sss.append(ss)
+    slope = np.gradient(data.Idrain)/np.gradient(data.Vgate)
+    max_slope_i, max_slope = np.argmax(slope), np.max(slope)
+    Vt = data.Vgate[max_slope_i]-data.Idrain[max_slope_i]/max_slope
+    Vts.append(Vt)
 
     # Set the font dictionaries (for plot title and axis titles)
     title_font = {'fontname':'Arial', 'size':'16', 'color':'black', 'weight':'bold', 'verticalalignment':'bottom'}
     axis_font = {'fontname':'Arial', 'size':'12'}
 
 # Plot data
-plt.title('Subthreshold swing at different channel lengths')
+plt.title('Threshold voltage ($V_T$) at different channel lengths')
 plt.xlabel('Channel Length $L$ (um)', **axis_font)
-plt.ylabel('Subthreshold swing (mV/dec)', **axis_font)
-#plt.ylim(0,250)
-plt.loglog(Ls, sss, '.', markersize=10)
-plt.savefig('figures/short_channel_ss.png', format='png', dpi=1000)
+plt.ylabel('$V_T$ (V)', **axis_font)
+plt.ylim(0,2)
+plt.semilogx(Ls, Vts, '.', markersize=10)
+plt.savefig('figures/short_channel.eps', format='eps', dpi=1000)
 plt.show()

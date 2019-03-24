@@ -16,14 +16,14 @@ title_font = {'fontname':'Arial', 'size':'16', 'color':'black', 'weight':'bold',
 axis_font = {'fontname':'Arial', 'size':'12'}
 
 # Plot data
-plt.title('$I_{DS}$-$V_{DS}$ characteristics for L=100um W=100um nMOS transistor')
+plt.title('$I_{DS}$-$V_{DS}$ characteristics for L=100um W=100um NMOS transistor')
 plt.xlabel('$V_{DS}$ (V)', **axis_font)
 plt.ylabel('$I_{DS}$ (uA)', **axis_font)
 lines = []
 for Vgate in Vgates:
     dataVg = data[data.Vgate == Vgate]
-    line, = plt.plot(dataVg.Vdrain, helper.smooth(dataVg.Idrain)*1E6)
+    line, = plt.plot(dataVg.Vdrain, helper.smooth(dataVg.Idrain)*1E3)
     lines.append(line)
 plt.legend(lines, ['$V_{G}$=%sV' % Vgate for Vgate in Vgates])
-plt.savefig('figures/Id-Vds.eps', format='eps', dpi=1000)
+plt.savefig('figures/Id-Vds_Vgsweep_L100um.png', format='png', dpi=1000)
 plt.show()
